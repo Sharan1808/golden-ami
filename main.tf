@@ -6,3 +6,17 @@ resource "aws_instance" "ami" {
     Name = "golden-ami"
   }
 }
+
+resource "null_resource" "install" {
+  provisioner "remote-exec" {
+    connection {
+      type     = "ssh"
+      user     = "root"
+      password = var.root_password
+      host     = aws_instance.ami.private_ip
+    }
+    inline = [
+      "labauto ansible"
+    ]
+  }
+}
